@@ -20,6 +20,7 @@
 import time
 import torch
 import typing
+import os
 import bittensor as bt
 
 import openmeteo_requests
@@ -79,8 +80,9 @@ class Miner(BaseMinerNeuron):
             "start_date": start_time.strftime("%Y-%m-%d"),
             "end_date": end_time.strftime("%Y-%m-%d"),
         }
+        api_key = os.environ.get("OM_API_KEY")
         responses = self.openmeteo_api.weather_api(
-            "https://api.open-meteo.com/v1/forecast", params=params
+            f"https://customer-api.open-meteo.com/v1/forecast?apikey={api_key}", params=params
         )
         # get temperature output as grid of [time, lat, lon]
         output = np.stack(
